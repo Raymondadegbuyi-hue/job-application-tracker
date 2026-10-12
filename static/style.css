@@ -1,0 +1,410 @@
+/* ==========================================================
+   1. Colors and fonts (change the look here)
+   ========================================================== */
+:root {
+  --navy: #102A43;          /* header and table headings */
+  --blue: #2563EB;          /* buttons and links */
+  --blue-hover: #1D4ED8;    /* when the mouse is over it */
+  --blue-active: #1E40AF;   /* while it's being clicked */
+  --blue-tint: #EFF4FF;     /* light blue for highlighted rows */
+  --page: #F5F7FA;          /* page background */
+  --white: #FFFFFF;
+  --text: #1F2933;
+  --muted: #52606D;         /* secondary text */
+  --line: #D9E2EC;          /* borders */
+  --header-muted: #BCCCDC;  /* soft text on the navy header */
+  --error: #B91C1C;
+
+  --font-display: "Bricolage Grotesque", "Arial Black", sans-serif;
+  --font-body: "Atkinson Hyperlegible", Arial, sans-serif;
+  --radius: 8px;
+}
+
+/* ==========================================================
+   2. Base
+   ========================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.5vw, 2.5rem);
+  letter-spacing: -0.02em;
+  margin: 2rem 0 1.5rem;
+}
+
+a {
+  color: var(--blue);
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--blue-hover);
+}
+
+a:active {
+  color: var(--blue-active);
+}
+
+/* Visible outline for keyboard users */
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.container {
+  width: min(1100px, 100% - 2rem);
+  margin-inline: auto;
+}
+
+/* ==========================================================
+   3. Header
+   ========================================================== */
+.site-header {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.site-header :focus-visible {
+  outline-color: var(--white);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block: 0.9rem;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.brand:hover {
+  color: var(--header-muted);
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a:not(.btn) {
+  color: var(--header-muted);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav-links a:not(.btn):hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+/* ==========================================================
+   4. Buttons: three states (normal, hover, pressed)
+   ========================================================== */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--blue);
+  color: var(--white);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  background: var(--blue-hover);
+  color: var(--white);
+}
+
+.btn:active {
+  background: var(--blue-active);
+  transform: translateY(1px); /* feels like it's being pressed */
+}
+
+/* ==========================================================
+   5. Messages
+   ========================================================== */
+.messages {
+  margin-top: 1.5rem;
+}
+
+.message {
+  margin: 0 0 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-left: 5px solid;
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+.message-success {
+  border-left-color: #16A34A;
+}
+
+.message-error {
+  border-left-color: var(--error);
+  color: var(--error);
+  font-weight: 700;
+}
+
+/* ==========================================================
+   6. Applications table
+   ========================================================== */
+.table-wrap {
+  position: relative; /* keeps hidden screen-reader labels inside this box */
+  overflow-x: auto; /* scrolls sideways on phones instead of breaking the page */
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--line);
+}
+
+th {
+  background: var(--navy);
+  color: var(--white);
+  font-size: 0.95rem;
+}
+
+tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+tbody tr:hover {
+  background: var(--blue-tint); /* highlights the row under the mouse */
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Status badges */
+.status {
+  display: inline-block;
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.status-saved { background: #E4E7EB; color: #334E68; }
+.status-applied { background: #DBEAFE; color: #1E40AF; }
+.status-interviewing { background: #FEF3C7; color: #92400E; }
+.status-offer { background: #DCFCE7; color: #166534; }
+.status-rejected,
+.status-withdrawn { background: #EEF0F2; color: var(--muted); }
+
+.empty {
+  padding: 2.5rem;
+  background: var(--white);
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+}
+
+/* Status filter buttons above the table */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.filter:hover {
+  border-color: var(--blue);
+  color: var(--blue-hover);
+}
+
+.filter.is-active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+}
+
+.count {
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* Text that screen readers announce but sighted users don't see */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ==========================================================
+   7. Form
+   ========================================================== */
+.form {
+  max-width: 640px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.1rem;
+  flex: 1;
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+label {
+  font-weight: 700;
+}
+
+.req {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #BCCCDC;
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text);
+  min-width: 0;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: var(--muted);
+}
+
+/* A soft blue ring shows which box you're typing in */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* Delete section on the edit page */
+.danger-zone {
+  max-width: 640px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 2rem;
+  margin-bottom: 3rem;
+  border: 1px solid #F3C5C5;
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+.danger-zone p {
+  margin: 0;
+}
+
+.btn-danger {
+  background: var(--error);
+}
+
+.btn-danger:hover {
+  background: #991B1B;
+}
+
+.btn-danger:active {
+  background: #7F1D1D;
+}
+
+/* ==========================================================
+   8. Respect people who turn off animations
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

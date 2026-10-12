@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit application" if mode == "edit" else "Add application" }}{% endblock %}
+
+{% block content %}
+  <h1>{{ "Edit application" if mode == "edit" else "Add application" }}</h1>
+
+  <form method="post" class="form" novalidate>
+    <div class="field">
+      <label for="company">Company <span class="req">(required)</span></label>
+      <input id="company" name="company" type="text" required value="{{ form.get('company', '') }}">
+    </div>
+
+    <div class="field">
+      <label for="role">Role <span class="req">(required)</span></label>
+      <input id="role" name="role" type="text" required value="{{ form.get('role', '') }}">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          {% for status in statuses %}
+            <option value="{{ status }}" {% if form.get('status', 'Saved') == status %}selected{% endif %}>{{ status }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="date_applied">Date applied</label>
+        <input id="date_applied" name="date_applied" type="date" value="{{ form.get('date_applied', '') }}">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="location">Location</label>
+      <input id="location" name="location" type="text" placeholder="Vancouver, BC (hybrid)" value="{{ form.get('location', '') }}">
+    </div>
+
+    <div class="field">
+      <label for="job_url">Link to job posting</label>
+      <input id="job_url" name="job_url" type="url" placeholder="https://" value="{{ form.get('job_url', '') }}">
+    </div>
+
+    <fieldset class="field-row">
+      <legend>Salary range (CAD)</legend>
+      <div class="field">
+        <label for="salary_min">Minimum</label>
+        <input id="salary_min" name="salary_min" type="number" min="0" step="1" inputmode="numeric" value="{{ form.get('salary_min', '') }}">
+      </div>
+      <div class="field">
+        <label for="salary_max">Maximum</label>
+        <input id="salary_max" name="salary_max" type="number" min="0" step="1" inputmode="numeric" value="{{ form.get('salary_max', '') }}">
+      </div>
+      <div class="field">
+        <label for="salary_period">Paid</label>
+        <select id="salary_period" name="salary_period">
+          <option value="hour" {% if form.get('salary_period', 'hour') == 'hour' %}selected{% endif %}>per hour</option>
+          <option value="year" {% if form.get('salary_period') == 'year' %}selected{% endif %}>per year</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="notes">Notes</label>
+      <textarea id="notes" name="notes" rows="4">{{ form.get('notes', '') }}</textarea>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn" type="submit">{{ "Save changes" if mode == "edit" else "Save application" }}</button>
+      <a href="{{ url_for('index') }}">Cancel</a>
+    </div>
+  </form>
+
+  {% if mode == "edit" %}
+    <form class="danger-zone" method="post"
+          action="{{ url_for('delete', application_id=application.id) }}"
+          onsubmit="return confirm('Delete this application? This cannot be undone.');">
+      <p>Delete this application permanently.</p>
+      <button class="btn btn-danger" type="submit">Delete application</button>
+    </form>
+  {% endif %}
+{% endblock %}

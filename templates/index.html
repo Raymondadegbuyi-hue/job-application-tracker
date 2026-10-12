@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}All applications{% endblock %}
+
+{% block content %}
+  <h1>Applications</h1>
+
+  {% if total %}
+    <nav class="filters" aria-label="Filter by status">
+      <a href="{{ url_for('index') }}" class="filter{% if not current_status %} is-active{% endif %}"
+         {% if not current_status %}aria-current="page"{% endif %}>All <span class="count">{{ total }}</span></a>
+      {% for status in statuses %}
+        <a href="{{ url_for('index', status=status) }}" class="filter{% if current_status == status %} is-active{% endif %}"
+           {% if current_status == status %}aria-current="page"{% endif %}>{{ status }} <span class="count">{{ counts.get(status, 0) }}</span></a>
+      {% endfor %}
+    </nav>
+  {% endif %}
+
+  {% if applications %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Company</th>
+            <th scope="col">Role</th>
+            <th scope="col">Status</th>
+            <th scope="col">Applied</th>
+            <th scope="col">Location</th>
+            <th scope="col">Salary</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for app in applications %}
+            <tr>
+              <td>
+                {% if app.job_url %}
+                  <a href="{{ app.job_url }}" target="_blank" rel="noopener noreferrer">{{ app.company }}</a>
+                {% else %}
+                  {{ app.company }}
+                {% endif %}
+              </td>
+              <td>{{ app.role }}</td>
+              <td><span class="status status-{{ app.status | lower }}">{{ app.status }}</span></td>
+              <td>{{ app.date_applied or "Not yet" }}</td>
+              <td>{{ app.location or "" }}</td>
+              <td>
+                {% if app.salary_min is not none or app.salary_max is not none %}
+                  {% set low = "{:,}".format(app.salary_min) if app.salary_min is not none else "?" %}
+                  {% set high = "{:,}".format(app.salary_max) if app.salary_max is not none else "" %}
+                  ${{ low }}{% if high and high != low %}–{{ high }}{% endif %}/{{ "hr" if app.salary_period == "hour" else "yr" }}
+                {% endif %}
+              </td>
+              <td><a href="{{ url_for('edit', application_id=app.id) }}">Edit<span class="visually-hidden"> {{ app.role }} at {{ app.company }}</span></a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% elif current_status %}
+    <div class="empty">
+      <p>No applications with the status {{ current_status }}.</p>
+      <a href="{{ url_for('index') }}">Show all applications</a>
+    </div>
+  {% else %}
+    <div class="empty">
+      <p>No applications yet. Add the first job you've applied to, or one you're planning to.</p>
+      <a class="btn" href="{{ url_for('add') }}">Add application</a>
+    </div>
+  {% endif %}
+{% endblock %}
