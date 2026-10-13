@@ -191,6 +191,7 @@ a:active {
 
 table {
   width: 100%;
+  min-width: 760px; /* below this width, the box scrolls sideways (phones) */
   border-collapse: collapse;
 }
 
@@ -198,8 +199,13 @@ th,
 td {
   padding: 0.75rem 1rem;
   text-align: left;
-  white-space: nowrap;
+  vertical-align: middle;
   border-bottom: 1px solid var(--line);
+}
+
+/* Short values that should never break onto two lines */
+.nowrap {
+  white-space: nowrap;
 }
 
 th {
